@@ -11,8 +11,23 @@ router.get("/products", (req, res) => {
             (error, result, fields) => {
                 if (error) return res.send(500).send({ error })
 
+                const response = {
+                    quantify: result.length,
+                    products: result.map(product => {
+                        return {
+                            id: product.id,
+                            name: product.nome,
+                            price: product.preco,
+                            url: `http://${process.env.MYSQL_HOST}:3000/products/${product.id}`
+                        }
+                    }),
+                    request: {
+                        description: "Retorna todos os produtos"
+                    }
+                }
+
                 // Retorna um json dos produtos cadastrados
-                return res.status(200).send({ response: result })
+                return res.status(200).send({ response })
             }
         )
     })
@@ -30,7 +45,23 @@ router.get("/products/:id", (req, res) => {
             (error, result, fields) => {
                 if (error) return res.send(500).send({ error })
 
-                return res.status(200).send({ response: result })
+                if (result.length === 0) {
+                    return res.status(404).send({
+                        message: "Nenhum produto encontrado com este id"
+                    })
+                }
+
+                const response = {
+                    id: result[0].id,
+                    name: result[0].nome,
+                    price: result[0].preco,
+                    request: {
+                        description: "Retorna detalhes de um produto",
+                        url: `http://${process.env.MYSQL_HOST}:3000/products`
+                    }
+                }
+
+                return res.status(200).send({ response })
             }
         )
     })
@@ -50,10 +81,17 @@ router.post("/products", (req, res) => {
 
                 if (error) return res.send(500).send({ error })
 
-                return res.status(201).send({
+                const response = {
                     message: "Produto cadastrado com sucesso",
-                    id: result.insertId // id do produto inserido
-                })
+                    products: {
+                        id: result.insertId,
+                        name,
+                        price,
+                        url: `http://${process.env.MYSQL_HOST}:3000/products`
+                    }
+                }
+
+                return res.status(201).send({ response })
             }
         )
     })
@@ -72,10 +110,20 @@ router.patch("/products/:id", (req, res) => {
             (error, result, fields) => {
                 if (error) return res.send(500).send({ error })
 
-                return res.status(200).send({
-                    message: "Produtos atualizado com sucesso",
-                    response: result
-                })
+                const response = {
+                    message: "Produto atualizado com sucesso",
+                    product: {
+                        id,
+                        name,
+                        price,
+                        url: `http://${process.env.MYSQL_HOST}:3000/products`
+                    },
+                    request: {
+                        description: "Atualiza dados de um produto"
+                    }
+                }
+
+                return res.status(202).send({ response })
             }
         )
     })
@@ -93,10 +141,21 @@ router.delete("/products/:id", (req, res) => {
             (error, result, fields) => {
                 if (error) return res.send(500).send({ error })
 
-                return res.status(200).send({
-                    message: "Produto deletado com sucesso",
-                    response: result
-                })
+                if (result.length === 0) {
+                    return res.status(404).send({
+                        message: "Nenhum produto para remover"
+                    })
+                }
+
+                const response = {
+                    message: "Produto removido com sucesso",
+                    request: {
+                        description: "Remove um produto",
+                        url: `http://${process.env.MYSQL_HOST}:3000/products`
+                    }
+                }
+
+                return res.status(202).send({ response })
             }
         )
     })
