@@ -2,6 +2,7 @@ const express = require("express")
 const app = express()
 const port = process.env.PORT || 3000
 const routerProducts = require("./routes/products")
+const routerRequests = require("./routes/requests")
 
 app.use(express.json())
 
@@ -10,6 +11,12 @@ app.get("/products/:id", routerProducts)
 app.post("/products", routerProducts)
 app.patch("/products/:id", routerProducts)
 app.delete("/products/:id", routerProducts)
+
+app.get("/pedidos", routerRequests)
+app.get("/pedidos/:id", routerRequests)
+app.post("/pedidos", routerRequests)
+app.patch("/pedidos/:id", routerRequests)
+app.delete("/pedidos/:id", routerRequests)
 
 // Executa quando digitar uma rota que não existe
 app.use((req, res) => {
