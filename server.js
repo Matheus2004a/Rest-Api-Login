@@ -23,6 +23,8 @@ app.delete("/pedidos/:id", routerRequests)
 app.get("/users", routerUsers)
 app.get("/users/:id", routerUsers)
 app.post("/users/signup", routerUsers)
+app.patch("/users/signup/:id", routerUsers)
+app.delete("/users/:id", routerUsers)
 
 // Executa quando digitar uma rota que não existe
 app.use((req, res) => {

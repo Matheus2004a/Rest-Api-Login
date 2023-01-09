@@ -14,7 +14,7 @@ router.get("/users", (req, res) => {
 
                 const response = {
                     quantify: result.length,
-                    products: result.map(user => {
+                    users: result.map(user => {
                         return {
                             id: user.id,
                             email: user.email,
@@ -105,6 +105,77 @@ router.post("/users/signup", (req, res, next) => {
                         }
                     )
                 })
+            }
+        )
+    })
+})
+
+router.patch("/users/signup/:id", (req, res) => {
+    const { id } = req.params
+    const { email, password } = req.body
+
+    mysql.getConnection((error, conn) => {
+        if (error) return res.status(500).send({ error })
+
+        bcrypt.hash(password, 10, (error, hash) => {
+            if (error) return res.status(500).send({ error })
+
+            conn.query(
+                `UPDATE tbl_usuarios SET email = ?, senha = ? WHERE id = ?`,
+                [email, hash, id],
+                (error, result) => {
+                    conn.release()
+
+                    if (error) return res.status(500).send({ error })
+
+                    const response = {
+                        message: "Usuário atualizado com sucesso",
+                        user: {
+                            id: result.id,
+                            email,
+                            url: `http://${process.env.MYSQL_HOST}:3000/products`
+                        },
+                        request: {
+                            description: "Atualiza dados de um usuário"
+                        }
+                    }
+
+                    return res.status(202).send({ response })
+                }
+            )
+        })
+    })
+})
+
+router.delete("/users/:id", (req, res) => {
+    const { id } = req.params
+
+    mysql.getConnection((error, conn) => {
+        if (error) return res.status(500).send({ error })
+
+        conn.query(
+            "DELETE FROM tbl_usuarios WHERE id = ?",
+            [id],
+            (error, result, fields) => {
+                conn.release()
+
+                if (error) return res.status(500).send({ error })
+
+                if (result.affectedRows === 0) {
+                    return res.status(404).send({
+                        message: "Usuário inexistente"
+                    })
+                }
+
+                const response = {
+                    message: "Usuário removido com sucesso",
+                    request: {
+                        description: "Remove um usuário",
+                        url: `http://${process.env.MYSQL_HOST}:3000/products`
+                    }
+                }
+
+                return res.status(202).send({ response })
             }
         )
     })
