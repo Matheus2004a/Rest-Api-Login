@@ -3,6 +3,7 @@ const app = express()
 const port = process.env.PORT || 3000
 const routerProducts = require("./routes/products")
 const routerRequests = require("./routes/requests")
+const routerUsers = require("./routes/users")
 
 app.use(express.json())
 app.use("/uploads", express.static("uploads"))
@@ -18,6 +19,8 @@ app.get("/pedidos/:id", routerRequests)
 app.post("/pedidos", routerRequests)
 app.patch("/pedidos/:id", routerRequests)
 app.delete("/pedidos/:id", routerRequests)
+
+app.post("/users/signup", routerUsers)
 
 // Executa quando digitar uma rota que não existe
 app.use((req, res) => {
