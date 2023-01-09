@@ -1,6 +1,19 @@
 const express = require("express")
 const router = express.Router()
 const mysql = require("../mysql").pool
+const multer = require("multer")
+
+const storage = multer.diskStorage({
+    destination: (req, file, callback) => {
+        callback(null, "./uploads/")
+    },
+    filename: (req, file, callback) => {
+        let data = new Date().toISOString().replace(/:/g, '-') + '-'
+        callback(null, data + file.originalname)
+    }
+})
+
+const upload = multer({ storage })
 
 router.get("/products", (req, res) => {
     mysql.getConnection((error, conn) => {
@@ -9,7 +22,7 @@ router.get("/products", (req, res) => {
         conn.query(
             "SELECT * FROM tbl_produtos",
             (error, result, fields) => {
-                if (error) return res.send(500).send({ error })
+                if (error) return res.status(500).send({ error })
 
                 const response = {
                     quantify: result.length,
@@ -18,6 +31,7 @@ router.get("/products", (req, res) => {
                             id: product.id,
                             name: product.nome,
                             price: product.preco,
+                            image: product.imagem,
                             url: `http://${process.env.MYSQL_HOST}:3000/products/${product.id}`
                         }
                     }),
@@ -43,7 +57,7 @@ router.get("/products/:id", (req, res) => {
             "SELECT * FROM tbl_produtos WHERE id = ?",
             [id],
             (error, result, fields) => {
-                if (error) return res.send(500).send({ error })
+                if (error) return res.status(500).send({ error })
 
                 if (result.length === 0) {
                     return res.status(404).send({
@@ -55,6 +69,7 @@ router.get("/products/:id", (req, res) => {
                     id: result[0].id,
                     name: result[0].nome,
                     price: result[0].preco,
+                    image: result[0].imagem,
                     request: {
                         description: "Retorna detalhes de um produto",
                         url: `http://${process.env.MYSQL_HOST}:3000/products`
@@ -67,19 +82,20 @@ router.get("/products/:id", (req, res) => {
     })
 })
 
-router.post("/products", (req, res) => {
+router.post("/products", upload.single("imagem"), (req, res) => {
     const { name, price } = req.body
+    const { path } = req.file
 
     mysql.getConnection((error, conn) => {
         if (error) return res.status(500).send({ error })
 
         conn.query(
-            "INSERT INTO tbl_produtos (nome, preco) VALUES (?, ?)",
-            [name, price],
+            "INSERT INTO tbl_produtos (nome, preco, imagem) VALUES (?, ?, ?)",
+            [name, price, path],
             (error, result, fields) => {
                 conn.release()
 
-                if (error) return res.send(500).send({ error })
+                if (error) return res.status(500).send({ error })
 
                 const response = {
                     message: "Produto cadastrado com sucesso",
@@ -87,6 +103,7 @@ router.post("/products", (req, res) => {
                         id: result.insertId,
                         name,
                         price,
+                        image: path,
                         url: `http://${process.env.MYSQL_HOST}:3000/products`
                     }
                 }
@@ -108,14 +125,15 @@ router.patch("/products/:id", (req, res) => {
             "UPDATE tbl_produtos SET nome = ?, preco = ? WHERE id = ?",
             [name, price, id],
             (error, result, fields) => {
-                if (error) return res.send(500).send({ error })
+                if (error) return res.status(500).send({ error })
 
                 const response = {
                     message: "Produto atualizado com sucesso",
                     product: {
-                        id,
+                        id: result[0].id,
                         name,
                         price,
+                        image: result[0].imagem,
                         url: `http://${process.env.MYSQL_HOST}:3000/products`
                     },
                     request: {
@@ -139,7 +157,7 @@ router.delete("/products/:id", (req, res) => {
             "DELETE FROM tbl_produtos WHERE id = ?",
             [id],
             (error, result, fields) => {
-                if (error) return res.send(500).send({ error })
+                if (error) return res.status(500).send({ error })
 
                 if (result.length === 0) {
                     return res.status(404).send({

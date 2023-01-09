@@ -5,6 +5,7 @@ const routerProducts = require("./routes/products")
 const routerRequests = require("./routes/requests")
 
 app.use(express.json())
+app.use("/uploads", express.static("uploads"))
 
 app.get("/products", routerProducts)
 app.get("/products/:id", routerProducts)
