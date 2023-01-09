@@ -7,7 +7,7 @@ router.get("/pedidos", (req, res) => {
         if (error) return res.status(500).send({ error })
 
         conn.query(
-            "SELECT * FROM tbl_pedidos",
+            "SELECT * FROM view_pedidos",
             (error, result, fields) => {
                 if (error) return res.send(500).send({ error })
 
@@ -20,10 +20,14 @@ router.get("/pedidos", (req, res) => {
                 const response = {
                     requests: result.map(request => {
                         return {
-                            id: request.id,
+                            id: request.id_pedido,
                             quantify: request.quantidade,
-                            productId: request.produtos_id,
-                            url: `http://${process.env.MYSQL_HOST}:3000/pedidos/${request.produtos_id}`
+                            products: {
+                                id: request.id_produto,
+                                name: request.nome,
+                                price: request.preco
+                            },
+                            url: `http://${process.env.MYSQL_HOST}:3000/pedidos/${request.id_produto}`
                         }
                     }),
                     request: {
@@ -44,7 +48,7 @@ router.get("/pedidos/:id", (req, res) => {
         if (error) return res.status(500).send({ error })
 
         conn.query(
-            "SELECT * FROM tbl_pedidos WHERE id = ?",
+            "SELECT * FROM view_pedidos WHERE id_pedido = ?",
             [id],
             (error, result, fields) => {
                 if (error) return res.send(500).send({ error })
@@ -56,9 +60,13 @@ router.get("/pedidos/:id", (req, res) => {
                 }
 
                 const response = {
-                    id: result[0].id,
+                    id: result[0].id_pedido,
                     quantify: result[0].quantidade,
-                    productId: result[0].produtos_id,
+                    product: {
+                        id: result[0].id_produto,
+                        name: result[0].nome,
+                        price: result[0].preco
+                    },
                     request: {
                         description: "Retorna detalhes de um pedido",
                         url: `http://${process.env.MYSQL_HOST}:3000/pedidos`
