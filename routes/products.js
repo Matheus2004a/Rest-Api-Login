@@ -2,6 +2,7 @@ const express = require("express")
 const router = express.Router()
 const mysql = require("../mysql").pool
 const multer = require("multer")
+const login = require("../middleware/login")
 
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
@@ -82,7 +83,7 @@ router.get("/products/:id", (req, res) => {
     })
 })
 
-router.post("/products", upload.single("imagem"), (req, res) => {
+router.post("/products", login.required, upload.single("imagem"), (req, res) => {
     const { name, price } = req.body
     const { path } = req.file
 
@@ -114,7 +115,7 @@ router.post("/products", upload.single("imagem"), (req, res) => {
     })
 })
 
-router.patch("/products/:id", (req, res) => {
+router.patch("/products/:id", login.required, (req, res) => {
     const { id } = req.params
     const { name, price } = req.body
 
@@ -147,7 +148,7 @@ router.patch("/products/:id", (req, res) => {
     })
 })
 
-router.delete("/products/:id", (req, res) => {
+router.delete("/products/:id", login.required, (req, res) => {
     const { id } = req.params
 
     mysql.getConnection((error, conn) => {
