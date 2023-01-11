@@ -1,9 +1,9 @@
 const express = require("express")
 const app = express()
 const port = process.env.PORT || 3000
-const routerProducts = require("./routes/products")
-const routerRequests = require("./routes/requests")
-const routerUsers = require("./routes/users")
+const routerProducts = require("./src/routes/products")
+const routerRequests = require("./src/routes/requests")
+const routerUsers = require("./src/routes/users")
 
 app.use(express.json())
 app.use("/uploads", express.static("uploads"))

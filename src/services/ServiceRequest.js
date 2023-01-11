@@ -1,6 +1,6 @@
-const mysql = require("../mysql").pool
+const mysql = require("../../mysql").pool
 
-exports.getRequests = (req, res) => {
+function getRequests(req, res) {
     mysql.getConnection((error, conn) => {
         if (error) return res.status(500).send({ error })
 
@@ -38,7 +38,7 @@ exports.getRequests = (req, res) => {
     })
 }
 
-exports.getRequest = (req, res) => {
+function getRequestById(req, res) {
     const { id } = req.params
 
     mysql.getConnection((error, conn) => {
@@ -74,7 +74,7 @@ exports.getRequest = (req, res) => {
     })
 }
 
-exports.postRequest = (req, res) => {
+function createRequest(req, res) {
     const { productId, quantify } = req.body
 
     mysql.getConnection((error, conn) => {
@@ -105,7 +105,7 @@ exports.postRequest = (req, res) => {
     })
 }
 
-exports.updateRequest = (req, res) => {
+function updateRequestById(req, res) {
     const { id } = req.params
     const { quantify } = req.body
 
@@ -134,7 +134,7 @@ exports.updateRequest = (req, res) => {
     })
 }
 
-exports.deleteRequest = (req, res) => {
+function deleteRequestById(req, res) {
     const { id } = req.params
 
     mysql.getConnection((error, conn) => {
@@ -162,4 +162,12 @@ exports.deleteRequest = (req, res) => {
             return res.status(202).send({ response })
         })
     })
+}
+
+module.exports = {
+    getRequests,
+    getRequestById,
+    createRequest,
+    updateRequestById,
+    deleteRequestById
 }

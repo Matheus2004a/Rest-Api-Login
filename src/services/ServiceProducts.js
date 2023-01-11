@@ -1,6 +1,6 @@
-const mysql = require("../mysql").pool
+const mysql = require("../../mysql").pool
 
-exports.getProducts = (req, res) => {
+function getProducts(req, res) {
     mysql.getConnection((error, conn) => {
         if (error) return res.status(500).send({ error })
 
@@ -30,7 +30,7 @@ exports.getProducts = (req, res) => {
     })
 }
 
-exports.getProduct = (req, res) => {
+function getProduct(req, res) {
     const { id } = req.params
 
     mysql.getConnection((error, conn) => {
@@ -63,7 +63,7 @@ exports.getProduct = (req, res) => {
     })
 }
 
-exports.postProduct = (req, res) => {
+function createProduct(req, res) {
     const { name, price } = req.body
     const { path } = req.file
 
@@ -93,7 +93,7 @@ exports.postProduct = (req, res) => {
     })
 }
 
-exports.updateProduct = (req, res) => {
+function updateProduct(req, res) {
     const { id } = req.params
     const { name, price } = req.body
 
@@ -124,7 +124,7 @@ exports.updateProduct = (req, res) => {
     })
 }
 
-exports.deleteProduct = (req, res) => {
+function deleteProduct(req, res) {
     const { id } = req.params
 
     mysql.getConnection((error, conn) => {
@@ -152,4 +152,12 @@ exports.deleteProduct = (req, res) => {
             return res.status(202).send({ response })
         })
     })
+}
+
+module.exports = {
+    getProducts,
+    getProduct,
+    createProduct,
+    updateProduct,
+    deleteProduct
 }

@@ -1,8 +1,8 @@
-const mysql = require("../mysql").pool
+const mysql = require("../../mysql").pool
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 
-exports.getUsers = (req, res) => {
+function getAllUsers(req, res) {
     mysql.getConnection((error, conn) => {
         if (error) return res.status(500).send({ error })
 
@@ -30,7 +30,7 @@ exports.getUsers = (req, res) => {
     })
 }
 
-exports.getUser = (req, res) => {
+function getUserById(req, res) {
     const { id } = req.params
 
     mysql.getConnection((error, conn) => {
@@ -61,7 +61,7 @@ exports.getUser = (req, res) => {
     })
 }
 
-exports.postUser = (req, res, next) => {
+function createUser(req, res, next) {
     const { email, password } = req.body
 
     mysql.getConnection((error, conn) => {
@@ -102,7 +102,7 @@ exports.postUser = (req, res, next) => {
     })
 }
 
-exports.updateUser = (req, res) => {
+function updateUserById(req, res) {
     const { id } = req.params
     const { email, password } = req.body
 
@@ -137,7 +137,7 @@ exports.updateUser = (req, res) => {
     })
 }
 
-exports.deleteUser = (req, res) => {
+function deleteUserById(req, res) {
     const { id } = req.params
 
     mysql.getConnection((error, conn) => {
@@ -169,7 +169,7 @@ exports.deleteUser = (req, res) => {
     })
 }
 
-exports.loginUser = (req, res, next) => {
+function loginUser(req, res, next) {
     const { email, password } = req.body
 
     function checkLogin() {
@@ -213,4 +213,13 @@ exports.loginUser = (req, res, next) => {
             })
         })
     })
+}
+
+module.exports = {
+    getAllUsers,
+    getUserById,
+    createUser,
+    updateUserById,
+    deleteUserById,
+    loginUser
 }
