@@ -8,24 +8,9 @@ const routerUsers = require("./src/routes/users")
 app.use(express.json())
 app.use("/uploads", express.static("uploads"))
 
-app.get("/products", routerProducts)
-app.get("/products/:id", routerProducts)
-app.post("/products", routerProducts)
-app.patch("/products/:id", routerProducts)
-app.delete("/products/:id", routerProducts)
-
-app.get("/pedidos", routerRequests)
-app.get("/pedidos/:id", routerRequests)
-app.post("/pedidos", routerRequests)
-app.patch("/pedidos/:id", routerRequests)
-app.delete("/pedidos/:id", routerRequests)
-
-app.get("/users", routerUsers)
-app.get("/users/:id", routerUsers)
-app.post("/users/signup", routerUsers)
-app.patch("/users/signup/:id", routerUsers)
-app.delete("/users/:id", routerUsers)
-app.post("/users/login", routerUsers)
+app.use(routerProducts)
+app.use(routerRequests)
+app.use(routerUsers)
 
 // Executa quando digitar uma rota que não existe
 app.use((req, res) => {
