@@ -1,0 +1,45 @@
+@import "./colors.scss", "./resets.scss";
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: $alice-blue;
+}
+
+fieldset {
+    display: grid;
+    gap: .5rem;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: $white;
+    border-radius: 5px;
+}
+
+button {
+    background: $blue;
+    color: $white;
+    border-radius: 5px;
+    padding: 10px;
+    font-weight: bold;
+}
+
+input {
+    padding: 10px;
+    font-size: 1rem;
+    background: $alice-blue;
+    border-radius: 5px;
+}
+
+.account a {
+    color: $grey;
+    font-weight: bold;
+}

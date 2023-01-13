@@ -1,0 +1,25 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', 'Poppins', sans-serif;
+}
+
+fieldset,
+button,
+input {
+    border: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+button {
+    cursor: pointer;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 1rem;
+}
