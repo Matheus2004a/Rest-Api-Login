@@ -1,5 +1,6 @@
 const express = require("express")
 const app = express()
+const cors = require("cors")
 const port = process.env.PORT || 3000
 const routerProducts = require("./src/routes/products")
 const routerRequests = require("./src/routes/requests")
@@ -7,6 +8,14 @@ const routerUsers = require("./src/routes/users")
 
 app.use(express.json())
 app.use("/uploads", express.static("uploads"))
+
+app.use(cors({
+    methods: ["POST", "GET", "PATCH", "PUT", "DELETE", "OPTIONS"],
+    origin: ["http://localhost:5173"],
+    credentials: true,
+    exposedHeaders: ["*", "Authorization"],
+    allowedHeaders: ["*", "Authorization", "Content-Type"]
+}))
 
 app.use(routerProducts)
 app.use(routerRequests)
