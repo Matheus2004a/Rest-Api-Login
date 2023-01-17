@@ -6,11 +6,11 @@ import { api } from "../api";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
-import Button from "../../components/Button/Button";
+import Button from "../../components/Button/Button"
 
 import "../../App.scss";
 
-function SignUp() {
+function SignIn() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
@@ -22,7 +22,7 @@ function SignUp() {
             password
         })
 
-        const url = `${api.defaults.baseURL}/users/signup`
+        const url = `${api.defaults.baseURL}/users/login`
 
         try {
             const result = await axios.post(url, user, {
@@ -30,8 +30,9 @@ function SignUp() {
                     "Content-Type": "application/json"
                 }
             })
-            const { message } = result.data.response
+            const { message, token } = result.data
             toast.success(message)
+            localStorage.setItem("token", token)
         } catch (error) {
             const { message } = error.response.data
             message !== "" ? toast.error(message) : toast.error(error.message)
@@ -45,7 +46,7 @@ function SignUp() {
                 theme="colored"
             />
 
-            <h1>Cadastro de usuário</h1>
+            <h1>Sistema de login</h1>
 
             <form method="post" onSubmit={handleSubmit}>
                 <fieldset>
@@ -58,12 +59,12 @@ function SignUp() {
                     <input type="password" name="password" id="password" placeholder="Digite sua senha" autoComplete="on" onBlur={e => setPassword(e.target.value)} />
                 </fieldset>
 
-                <Button>Cadastrar - se</Button>
+                <Button>Entrar</Button>
 
-                <p className="account">Já possui uma conta? <Link to="/">Entre aqui</Link></p>
+                <p className="account">Não tem uma conta? <Link to="/sign-up">Registre - se</Link></p>
             </form>
         </>
     )
 }
 
-export default SignUp
+export default SignIn
