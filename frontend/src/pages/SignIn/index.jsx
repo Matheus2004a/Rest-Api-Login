@@ -7,12 +7,14 @@ import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
 import Button from "../../components/Button/Button"
+import { Spinner } from "../../components/Spinner/Spinner";
 
 import "../../App.scss";
 
 function SignIn() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [isLoading, setIsLoading] = useState(false)
 
     async function handleSubmit(e) {
         e.preventDefault()
@@ -25,6 +27,7 @@ function SignIn() {
         const url = `${api.defaults.baseURL}/users/login`
 
         try {
+            setIsLoading(true)
             const result = await axios.post(url, user, {
                 headers: {
                     "Content-Type": "application/json"
@@ -34,9 +37,15 @@ function SignIn() {
             toast.success(message)
             localStorage.setItem("token", token)
         } catch (error) {
-            const { message } = error.response.data
-            message !== "" ? toast.error(message) : toast.error(error.message)
+            if (error) {
+                toast.error(error.message)
+            } else {
+                const { message } = error.response.data
+                toast.error(message)
+            }
+            setIsLoading(false)
         }
+        setIsLoading(false)
     }
 
     return (
@@ -59,7 +68,8 @@ function SignIn() {
                     <input type="password" name="password" id="password" placeholder="Digite sua senha" autoComplete="on" onBlur={e => setPassword(e.target.value)} />
                 </fieldset>
 
-                <Button>Entrar</Button>
+                {!isLoading && <Button>Entrar</Button>}
+                {isLoading && <Button><Spinner /></Button>}
 
                 <p className="account">Não tem uma conta? <Link to="/sign-up">Registre - se</Link></p>
             </form>
