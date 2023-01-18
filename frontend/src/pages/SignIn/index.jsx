@@ -37,11 +37,11 @@ function SignIn() {
             toast.success(message)
             localStorage.setItem("token", token)
         } catch (error) {
-            if (error) {
-                toast.error(error.message)
-            } else {
+            if (error.response) {
                 const { message } = error.response.data
                 toast.error(message)
+            } else {
+                toast.error(error.message)
             }
             setIsLoading(false)
         }
