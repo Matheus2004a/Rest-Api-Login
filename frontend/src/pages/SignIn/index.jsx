@@ -4,21 +4,16 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { api } from "../api";
 import { useForm } from "react-hook-form";
-import * as yup from "yup"
+import { validationSchema } from "../../utils/validations";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
 import Button from "../../components/Button/Button"
 import { Spinner } from "../../components/Spinner/Spinner";
-
-import "../../App.scss";
 import { InputError } from "../../components/InputError/InputError";
 
-const validationSchema = yup.object({
-    email: yup.string().email("Email inválido").required("Email é obrigatório"),
-    password: yup.string().required("Senha é obrigatória").min(8, "Senha deve ter 8 caracteres")
-})
+import "../../App.scss";
 
 function SignIn() {
     const [isLoading, setIsLoading] = useState(false)
