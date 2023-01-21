@@ -66,6 +66,7 @@ function SignIn() {
                         placeholder="Digite seu e-mail"
                         autoComplete="on"
                         {...register("email")}
+                        className={`${errors?.email?.type && "error"}`}
                     />
                     {errors?.email?.type && <InputError>{errors.email.message}</InputError>}
                 </fieldset>
@@ -79,6 +80,7 @@ function SignIn() {
                         placeholder="Digite sua senha"
                         autoComplete="on"
                         {...register("password")}
+                        className={`${errors?.password?.type && "error"}`}
                     />
                     {errors?.password?.type && <InputError>{errors.password.message}</InputError>}
                 </fieldset>
