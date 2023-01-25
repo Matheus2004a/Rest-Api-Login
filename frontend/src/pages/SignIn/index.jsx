@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import axios from "axios";
 import { api } from "../api";
@@ -18,6 +18,15 @@ import "../../App.scss";
 function SignIn() {
     const [isLoading, setIsLoading] = useState(false)
 
+    const navigate = useNavigate()
+
+    function redirectUserToHome(result) {
+        const { message, token } = result.data
+        localStorage.setItem("token", token)
+        toast.success(message)
+        setTimeout(() => navigate("/home"), 8000)
+    }
+
     async function onSubmit(data, e) {
         e.preventDefault()
 
@@ -31,9 +40,7 @@ function SignIn() {
                     "Content-Type": "application/json"
                 }
             })
-            const { message, token } = result.data
-            toast.success(message)
-            localStorage.setItem("token", token)
+            redirectUserToHome(result)
         } catch (error) {
             if (error.response) {
                 const { message } = error.response.data
@@ -49,7 +56,7 @@ function SignIn() {
     const { register, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(validationSchema) })
 
     return (
-        <>
+        <main>
             <ToastContainer
                 position="top-right"
                 theme="colored"
@@ -90,7 +97,7 @@ function SignIn() {
 
                 <p className="account">Não tem uma conta? <Link to="/sign-up">Registre - se</Link></p>
             </form>
-        </>
+        </main>
     )
 }
 

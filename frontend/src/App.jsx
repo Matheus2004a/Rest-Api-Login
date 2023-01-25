@@ -1,4 +1,4 @@
-import RoutesPath from "./routes";
+import RoutesPath from "./routes/routes"
 
 function App() {
   return (

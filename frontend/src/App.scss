@@ -1,12 +1,8 @@
-@import "./colors.scss", "./resets.scss";
+@import "./colors.scss", "./resets.scss", "./variables.scss";
 
 body {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
     background: $alice-blue;
+    @include body-position;
 }
 
 fieldset {
@@ -15,6 +11,8 @@ fieldset {
 }
 
 form {
+    width: fit-content;
+    margin: auto;
     display: flex;
     flex-direction: column;
     justify-content: center;

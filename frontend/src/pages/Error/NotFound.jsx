@@ -1,5 +1,3 @@
-import "./style.scss"
-
 function NotFound() {
     return (
         <main>

@@ -48,7 +48,7 @@ function SignUp() {
     const { register, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(validationSchema) })
 
     return (
-        <>
+        <main>
             <ToastContainer
                 position="top-right"
                 theme="colored"
@@ -90,7 +90,7 @@ function SignUp() {
 
                 <p className="account">Já possui uma conta? <Link to="/">Entre aqui</Link></p>
             </form>
-        </>
+        </main>
     )
 }
 

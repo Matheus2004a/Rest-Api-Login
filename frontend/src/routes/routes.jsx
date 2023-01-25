@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
 import Home from "../pages/Home/Home";
+import NotFound from "../pages/Error/NotFound";
 import PrivateRoutes from "./PrivateRoutes";
 
 function RoutesPath() {
@@ -11,6 +12,7 @@ function RoutesPath() {
             <Routes>
                 <Route path="/" element={<SignIn />}></Route>
                 <Route path="/sign-up" element={<SignUp />}></Route>
+                <Route path="*" element={<NotFound />}></Route>
                 <Route
                     path="/home"
                     element={
