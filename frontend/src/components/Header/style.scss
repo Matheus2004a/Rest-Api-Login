@@ -1,0 +1,45 @@
+@import "../../colors.scss";
+
+header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    background: $white;
+    padding: 1.5rem 2%;
+}
+
+header .search {
+    width: calc(100% - 60%);
+}
+
+nav .notification {
+    position: relative;
+}
+
+nav .notification::after {
+    content: "";
+    width: 12px;
+    height: 12px;
+    text-align: center;
+    background: $red;
+    color: $white;
+    border-radius: 50%;
+    position: absolute;
+    top: -5px;
+    left: 13px;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+nav ul {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+ul {
+    list-style: none;
+}
