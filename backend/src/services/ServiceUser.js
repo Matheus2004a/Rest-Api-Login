@@ -25,7 +25,7 @@ function getAllUsers(req, res) {
                 }
             }
 
-            return res.status(200).send({ response })
+            return res.status(200).send(response)
         })
     })
 }
@@ -56,7 +56,7 @@ function getUserById(req, res) {
                 }
             }
 
-            return res.status(200).send({ response })
+            return res.status(200).send(response)
         })
     })
 }
@@ -95,7 +95,7 @@ function createUser(req, res, next) {
                         }
                     }
 
-                    return res.status(201).send({ response })
+                    return res.status(201).send(response)
                 })
             })
         })
@@ -131,7 +131,7 @@ function updateUserById(req, res) {
                     }
                 }
 
-                return res.status(202).send({ response })
+                return res.status(202).send(response)
             })
         })
     })
@@ -164,7 +164,7 @@ function deleteUserById(req, res) {
                 }
             }
 
-            return res.status(202).send({ response })
+            return res.status(202).send(response)
         })
     })
 }

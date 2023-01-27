@@ -17,7 +17,7 @@ function getProducts(req, res) {
                         id: product.id,
                         name: product.nome,
                         price: formatPrice(product.preco),
-                        image: product.imagem,
+                        image: `http://${process.env.MYSQL_HOST}:3000/${product.imagem}` ,
                         url: `http://${process.env.MYSQL_HOST}:3000/products/${product.id}`
                     }
                 }),
@@ -26,7 +26,7 @@ function getProducts(req, res) {
                 }
             }
 
-            return res.status(200).send({ response })
+            return res.status(200).send(response)
         })
     })
 }
@@ -59,7 +59,7 @@ function getProduct(req, res) {
                 }
             }
 
-            return res.status(200).send({ response })
+            return res.status(200).send(response)
         })
     })
 }
@@ -89,7 +89,7 @@ function createProduct(req, res) {
                 }
             }
 
-            return res.status(201).send({ response })
+            return res.status(201).send(response)
         })
     })
 }
@@ -120,7 +120,7 @@ function updateProduct(req, res) {
                 }
             }
 
-            return res.status(202).send({ response })
+            return res.status(202).send(response)
         })
     })
 }
@@ -150,7 +150,7 @@ function deleteProduct(req, res) {
                 }
             }
 
-            return res.status(202).send({ response })
+            return res.status(202).send(response)
         })
     })
 }

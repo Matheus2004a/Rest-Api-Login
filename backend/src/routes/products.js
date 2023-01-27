@@ -18,7 +18,7 @@ const upload = multer({ storage })
 
 router.get("/products", ProductsController.getProducts)
 router.get("/products/:id", ProductsController.getProduct)
-router.post("/products", login.required, upload.single("imagem"), ProductsController.postProduct)
+router.post("/products", login.required, upload.single("image"), ProductsController.postProduct)
 router.patch("/products/:id", login.required, ProductsController.updateProduct)
 router.delete("/products/:id", login.required, ProductsController.deleteProduct)
 

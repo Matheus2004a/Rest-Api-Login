@@ -33,7 +33,7 @@ function getRequests(req, res) {
                 }
             }
 
-            return res.status(202).send({ response })
+            return res.status(202).send(response)
         })
     })
 }
@@ -69,7 +69,7 @@ function getRequestById(req, res) {
                 }
             }
 
-            return res.status(200).send({ response })
+            return res.status(200).send(response)
         })
     })
 }
@@ -100,7 +100,7 @@ function createRequest(req, res) {
                 }
             }
 
-            return res.status(201).send({ response })
+            return res.status(201).send(response)
         })
     })
 }
@@ -129,7 +129,7 @@ function updateRequestById(req, res) {
                 }
             }
 
-            return res.status(202).send({ response })
+            return res.status(202).send(response)
         })
     })
 }
@@ -159,7 +159,7 @@ function deleteRequestById(req, res) {
                 }
             }
 
-            return res.status(202).send({ response })
+            return res.status(202).send(response)
         })
     })
 }
