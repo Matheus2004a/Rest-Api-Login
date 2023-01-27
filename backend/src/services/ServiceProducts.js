@@ -1,4 +1,5 @@
 const mysql = require("../../mysql").pool
+const formatPrice = require("../helpers/prices")
 
 function getProducts(req, res) {
     mysql.getConnection((error, conn) => {
@@ -15,7 +16,7 @@ function getProducts(req, res) {
                     return {
                         id: product.id,
                         name: product.nome,
-                        price: product.preco,
+                        price: formatPrice(product.preco),
                         image: product.imagem,
                         url: `http://${process.env.MYSQL_HOST}:3000/products/${product.id}`
                     }
@@ -50,7 +51,7 @@ function getProduct(req, res) {
             const response = {
                 id: result[0].id,
                 name: result[0].nome,
-                price: result[0].preco,
+                price: formatPrice(result[0].preco),
                 image: result[0].imagem,
                 request: {
                     description: "Retorna detalhes de um produto",
